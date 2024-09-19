@@ -1,0 +1,9 @@
+@media (max-width: 600px) {
+  .survey-container {
+    padding: 15px;
+  }
+  .celebration img {
+    width: 80px;
+    height: 80px;
+  }
+}
