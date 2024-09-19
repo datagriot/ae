@@ -141,7 +141,25 @@ document.addEventListener('DOMContentLoaded', function() {
     alert('Maybe option selected. Further action can be implemented.');
     // Implement additional logic if needed
   }
+// Apps Script Code
 
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Responses_2024_11_AFROTECH_');
+  const data = JSON.parse(e.postData.contents);
+  
+  sheet.appendRow([
+    new Date(),
+    data.surveyTitle,
+    data.feel,
+    data.photo,
+    data.sessionInterest,
+    data.feedback,
+    data.collaboration,
+    data.suggestions
+  ]);
+  
+  return ContentService.createTextOutput(JSON.stringify({status: 'success'})).setMimeType(ContentService.MimeType.JSON);
+}
   // Trigger Celebration Animation and Sound
   function triggerCelebration() {
     const celebration = document.getElementById('celebration');
