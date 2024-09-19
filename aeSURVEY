@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Survey</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .survey-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .hidden {
+      display: none;
+    }
+    .celebration {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      display: none;
+    }
+    .celebration img {
+      width: 100px;
+      height: 100px;
+    }
+    .question {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    select, textarea, input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="survey-container">
+    <h1 id="survey-title">aE [Me/AfroTech/Us] Houston 11 2024</h1>
+    <p>
+      If you wish to go far, go together.<br><br>
+      This AfroTech 11 2024 in Houston, TX, let's boost the global supply of empathy. Answer 3 questions, get a visual of how you're doing and how we're doing. Check in. Let's take good care of each other today.<br><br>
+      ✌🏾 + ❤️
+    </p>
+
+    <!-- Survey Title Selection -->
+    <div id="title-selection">
+      <label for="survey-option">Select Survey Title:</label>
+      <select id="survey-option">
+        <option value="">--Select an option--</option>
+        <option value="Me">Me</option>
+        <option value="AfroTech">AfroTech</option>
+        <option value="Us">Us</option>
+      </select>
+    </div>
+
+    <!-- Dynamic Survey Questions -->
+    <div id="survey-questions" class="hidden">
+      <!-- Questions will be injected here based on selection -->
+    </div>
+
+    <!-- Celebration Animation -->
+    <div class="celebration" id="celebration">
+      <img src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif" alt="Celebration">
+      <audio id="celebration-sound" src="https://www.myinstants.com/media/sounds/ta-da-sound-effect.mp3"></audio>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('survey-option').addEventListener('change', function() {
+      const selection = this.value;
+      const questionsContainer = document.getElementById('survey-questions');
+      questionsContainer.innerHTML = ''; // Clear previous questions
+
+      if (selection === 'Me') {
+        displayMeQuestions();
+      } else if (selection === 'AfroTech') {
+        displayAfroTechQuestions();
+      } else if (selection === 'Us') {
+        displayUsQuestions();
+      }
+
+      if (selection) {
+        questionsContainer.classList.remove('hidden');
+      } else {
+        questionsContainer.classList.add('hidden');
+      }
+    });
+
+    function displayMeQuestions() {
+      const questions = `
+        <div class="question">
+          <label for="feel">How you feel?</label>
+          <input type="range" id="feel" name="feel" min="0" max="2" step="1" oninput="updateFeelLabel(this.value)">
+          <span id="feel-label">0 💙</span>
+        </div>
+
+        <div class="question">
+          <label for="photo">May I take a photo?</label>
+          <select id="photo" name="photo">
+            <option value="">--Select an option--</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+            <option value="2">Maybe</option>
+          </select>
+        </div>
+
+        <button id="submit-me">Submit</button>
+      `;
+
+      document.getElementById('survey-questions').innerHTML = questions;
+
+      // Add event listener for Submit button
+      document.getElementById('submit-me').addEventListener('click', function() {
+        handleMeSubmit();
+      });
+    }
+
+    function updateFeelLabel(value) {
+      const label = document.getElementById('feel-label');
+      if (value == 0) {
+        label.textContent = '0 💙';
+      } else if (value == 1) {
+        label.textContent = '1 ❤️';
+      } else if (value == 2) {
+        label.textContent = '2 ⚠️';
+      }
+    }
+
+    function handleMeSubmit() {
+      const feel = document.getElementById('feel').value;
+      const photo = document.getElementById('photo').value;
+
+      if (photo === '0') {
+        triggerDataVisualization();
+      } else if (photo === '1') {
+        triggerCameraAccess();
+      } else if (photo === '2') {
+        // Maybe option - handle accordingly
+        triggerMaybeOption();
+      }
+
+      // Trigger celebration animation and sound
+      triggerCelebration();
+    }
+
+    function triggerDataVisualization() {
+      // Replace with actual visualization logic
+      alert('Redirecting to data visualization page...');
+      // window.location.href = 'data-visualization.html'; // Example redirect
+    }
+
+    function triggerCameraAccess() {
+      // Request camera access
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+          // Handle camera stream
+          const video = document.createElement('video');
+          video.srcObject = stream;
+          video.play();
+          document.body.appendChild(video);
+
+          // Take a snapshot after a short delay
+          setTimeout(function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL('image/png');
+            document.body.appendChild(img);
+
+            // Stop the video stream
+            stream.getTracks().forEach(track => track.stop());
+            video.remove();
+          }, 3000); // 3-second delay
+        })
+        .catch(function(err) {
+          alert('Camera access denied.');
+          console.error(err);
+        });
+    }
+
+    function triggerMaybeOption() {
+      alert('Maybe option selected. Further action can be implemented.');
+      // Implement additional logic if needed
+    }
+
+    function triggerCelebration() {
+      const celebration = document.getElementById('celebration');
+      const sound = document.getElementById('celebration-sound');
+      celebration.style.display = 'block';
+      sound.play();
+
+      // Hide celebration after 3 seconds
+      setTimeout(function() {
+        celebration.style.display = 'none';
+      }, 3000);
+    }
+
+    function displayAfroTechQuestions() {
+      const questions = `
+        <div class="question">
+          <label for="session-interest">Which AfroTech session are you most interested in?</label>
+          <select id="session-interest" name="session-interest">
+            <option value="">--Select an option--</option>
+            <option>Keynote Speakers</option>
+            <option>Workshops</option>
+            <option>Networking Events</option>
+            <option>Exhibits</option>
+            <option>Others</option>
+          </select>
+        </div>
+
+        <div class="question">
+          <label for="event-feedback">Provide your feedback for AfroTech events.</label>
+          <textarea id="event-feedback" name="event-feedback" rows="4"></textarea>
+        </div>
+
+        <button id="submit-afrotech">Submit</button>
+      `;
+
+      document.getElementById('survey-questions').innerHTML = questions;
+
+      // Add event listener for Submit button
+      document.getElementById('submit-afrotech').addEventListener('click', function() {
+        handleAfroTechSubmit();
+      });
+    }
+
+    function handleAfroTechSubmit() {
+      const sessionInterest = document.getElementById('session-interest').value;
+      const feedback = document.getElementById('event-feedback').value;
+
+      // Process the AfroTech survey responses
+      console.log('Session Interest:', sessionInterest);
+      console.log('Feedback:', feedback);
+
+      // Trigger celebration animation and sound
+      triggerCelebration();
+
+      // Optionally, redirect or perform other actions
+    }
+
+    function displayUsQuestions() {
+      const questions = `
+        <div class="question">
+          <label for="team-collaboration">How would you rate our team collaboration?</label>
+          <input type="range" id="team-collaboration" name="team-collaboration" min="0" max="2" step="1" oninput="updateCollaborationLabel(this.value)">
+          <span id="collaboration-label">0 🤝</span>
+        </div>
+
+        <div class="question">
+          <label for="improvement-suggestions">Any suggestions for improvement?</label>
+          <textarea id="improvement-suggestions" name="improvement-suggestions" rows="4"></textarea>
+        </div>
+
+        <button id="submit-us">Submit</button>
+      `;
+
+      document.getElementById('survey-questions').innerHTML = questions;
+
+      // Add event listener for Submit button
+      document.getElementById('submit-us').addEventListener('click', function() {
+        handleUsSubmit();
+      });
+    }
+
+    function updateCollaborationLabel(value) {
+      const label = document.getElementById('collaboration-label');
+      if (value == 0) {
+        label.textContent = '0 🤝';
+      } else if (value == 1) {
+        label.textContent = '1 👍';
+      } else if (value == 2) {
+        label.textContent = '2 🚀';
+      }
+    }
+
+    function handleUsSubmit() {
+      const collaboration = document.getElementById('team-collaboration').value;
+      const suggestions = document.getElementById('improvement-suggestions').value;
+
+      // Process the Us survey responses
+      console.log('Team Collaboration:', collaboration);
+      console.log('Suggestions:', suggestions);
+
+      // Trigger celebration animation and sound
+      triggerCelebration();
+
+      // Optionally, redirect or perform other actions
+    }
+  </script>
+
+</body>
+</html>
