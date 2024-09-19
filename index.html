@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Survey</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+  <div class="survey-container">
+    <h1 id="survey-title">aE [Me/AfroTech/Us] Houston 11 2024</h1>
+    <p>
+      If you wish to go far, go together.<br><br>
+      This AfroTech 11 2024 in Houston, TX, let's boost the global supply of empathy. Answer 3 questions, get a visual of how you're doing and how we're doing. Check in. Let's take good care of each other today.<br><br>
+      ✌🏾 + ❤️
+    </p>
+
+    <!-- Survey Title Selection -->
+    <div id="title-selection">
+      <label for="survey-option">Select Survey Title:</label>
+      <select id="survey-option">
+        <option value="">--Select an option--</option>
+        <option value="Me">Me</option>
+        <option value="AfroTech">AfroTech</option>
+        <option value="Us">Us</option>
+      </select>
+    </div>
+
+    <!-- Dynamic Survey Questions -->
+    <div id="survey-questions" class="hidden">
+      <!-- Questions will be injected here based on selection -->
+    </div>
+
+    <!-- Celebration Animation -->
+    <div class="celebration" id="celebration">
+      <img src="assets/celebration.gif" alt="Celebration">
+      <audio id="celebration-sound" src="assets/celebration-sound.mp3"></audio>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
